@@ -19,15 +19,15 @@ const {
 } = require("discord.js");
 //initialise the api
 phoenix.init(process.env.INIT_URL);
-
+//change this to token from login in the api
 phoenix.User.Oauth.setAuthState(process.env.TOKEN, process.env.REFRESH_TOKEN);
-
+//variable that controls the months before the next event crew roles should be removed
 const timeBeforeNextEventRemove = process.env.REMOVE_MONTHS;
-
+//change this, guild id to ensure proper guild selection
 let phoenixGuildId = process.env.GUILD_ID;
-
+//set the discord token variable with the token from .env file
 const DISCORD_TOKEN = process.env.BOT_TOKEN;
-
+//change this to the rabbitmq address and port
 amqp.connect(process.env.RABBITMQ_CONNECT_LINK, function (error0, connection) {
     if (error0) {
         throw error0;
@@ -218,7 +218,7 @@ phoenixClient.on("messageCreate", async (message) => {
                     await Promise.all([
                         await removeAllRoles(),
                         await updateRoles(),
-                      ]);
+                    ]);
                     message.reply("roller oppdatert");
                 } else {
                     message.reply("du har ikke tillatelse til å gjøre dette, kontakt administrasjonen.");
