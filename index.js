@@ -1,7 +1,7 @@
 //import libraries
-const dotenv = require('dotenv').config();
-const phoenix = require('@phoenixlan/phoenix.js');
-const amqp = require('amqplib/callback_api');
+const dotenv = require("dotenv").config();
+const phoenix = require("@phoenixlan/phoenix.js");
+const amqp = require("amqplib/callback_api");
 const {
     UTCDate
 } = require("@date-fns/utc");
@@ -16,19 +16,19 @@ const {
     GatewayIntentBits,
     EmbedBuilder,
     Guild
-} = require('discord.js');
+} = require("discord.js");
 //initialise the api
-phoenix.init("https://api.test.phoenixlan.no");
-//change this to token from login in the api
-phoenix.User.Oauth.setAuthState("", "");
-//variable that controls the months before the next event crew roles should be removed
-const timeBeforeNextEventRemove = 2;
-//change this, guild id to ensure proper guild selection
-let phoenixGuildId = "";
-//set the discord token variable with the token from .env file
+phoenix.init(process.env.INIT_URL);
+
+phoenix.User.Oauth.setAuthState(process.env.TOKEN, process.env.REFRESH_TOKEN);
+
+const timeBeforeNextEventRemove = process.env.REMOVE_MONTHS;
+
+let phoenixGuildId = process.env.GUILD_ID;
+
 const DISCORD_TOKEN = process.env.BOT_TOKEN;
-//change this to the rabbitmq address and port
-amqp.connect('amqp://', function (error0, connection) {
+
+amqp.connect(process.env.RABBITMQ_CONNECT_LINK, function (error0, connection) {
     if (error0) {
         throw error0;
     }
@@ -37,7 +37,7 @@ amqp.connect('amqp://', function (error0, connection) {
             throw error1;
         }
         //change this
-        let queue = '';
+        let queue = "";
 
 
         channel.assertQueue(queue, {
@@ -159,7 +159,7 @@ async function updateRoles() {
 
 
 //when the bot turns on
-phoenixClient.on('ready', () => {
+phoenixClient.on("ready", () => {
     console.log(`Logged in as ${phoenixClient.user.tag}!`);
     updateRoles();
     setInterval(function () {
@@ -169,69 +169,70 @@ phoenixClient.on('ready', () => {
 });
 
 //when someone joins the server
-phoenixClient.on('guildMemberAdd', member => {
+phoenixClient.on("guildMemberAdd", member => {
     updateRoles();
 })
 
 //when there is a new message in the server
-phoenixClient.on('messageCreate', async (message) => {
+phoenixClient.on("messageCreate", async (message) => {
     if (message.author.bot) return;
     if (message.content.includes("chief")) {
         message.channel.send("det heter gruppeleder! :rage:");
     };
-    const prefix = '!';
+    const prefix = "!";
     //check if message is a command
     if (message.content.startsWith(prefix)) {
         const args = message.content.slice(prefix.length).trim().split(/ +/);
         const command = args.shift().toLowerCase();
         //handle commands
         switch (command) {
-            case 'help':
+            case "help":
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0099FF)
-                    .setTitle('Phoenix bot kommandoer')
-                    .setDescription('Kommandoer du kan bruke')
+                    .setTitle("Phoenix bot kommandoer")
+                    .setDescription("Kommandoer du kan bruke")
                     .addFields({
-                        name: '!help',
-                        value: 'Denne kommandoen. viser hvilke kommandoer du kan bruke'
+                        name: "!help",
+                        value: "Denne kommandoen. viser hvilke kommandoer du kan bruke"
                     }, {
-                        name: '!roles',
-                        value: 'Oppdaterer roller.',
+                        name: "!roles",
+                        value: "Oppdaterer roller.",
                     }, {
-                        name: '!liam',
-                        value: 'Viser den nåværende tiden i Japan',
+                        name: "!liam",
+                        value: "Viser den nåværende tiden i Japan",
                     })
                     .setTimestamp()
                     .setFooter({
-                        text: 'Phoenix bot !help',
+                        text: "Phoenix bot !help",
                     });
                 message.reply({
                     embeds: [helpEmbed]
                 });
                 break;
-            case 'roles':
+            case "roles":
                 //only runs if user has role "Administrasjon" in the discord server
                 const guild = phoenixClient.guilds.cache.get(phoenixGuildId);
                 const role = message.member.roles.cache.find(role => role.name === "Administrasjon")
-                if(role){
+                if (role) {
                     //removes roles and adds them again to make sure that if someone is removed from the crew, it will remove them first, then add all the people that are supposed to have roles
-                    await Promise.all((removeAllRoles(), updateRoles());
-                    
-                    
-                    message.reply('roller oppdatert');
+                    await Promise.all([
+                        await removeAllRoles(),
+                        await updateRoles(),
+                      ]);
+                    message.reply("roller oppdatert");
                 } else {
-                        message.reply('du har ikke tillatelse til å gjøre dette, kontakt administrasjonen.');
+                    message.reply("du har ikke tillatelse til å gjøre dette, kontakt administrasjonen.");
                 };
                 break;
-            case 'liam':
+            case "liam":
                 //getting time in japan, where liam lives
                 let liam_tid = new Date().toLocaleTimeString("nb-NO", {
                     timeZone: "JST"
                 });
-                message.reply("Liam bor i Japan som ligger 8 timer før Norge, tiden i japan er nå: " + liam_tid);
+                message.reply("Liam bor i Japan som ligger " + 7 + " timer før Norge, tiden i japan er nå: " + liam_tid);
                 break;
             default:
-                message.reply('Dette var en kommando som ikke funket, se om du skrev den riktig eller skriv !help for å se alle kommandoer');
+                message.reply("Dette var en kommando som ikke funket, se om du skrev den riktig eller skriv !help for å se alle kommandoer");
                 break;
         }
     }
