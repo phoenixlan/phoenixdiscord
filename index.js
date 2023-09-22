@@ -215,8 +215,9 @@ phoenixClient.on('messageCreate', async (message) => {
                 const role = message.member.roles.cache.find(role => role.name === "Administrasjon")
                 if(role){
                     //removes roles and adds them again to make sure that if someone is removed from the crew, it will remove them first, then add all the people that are supposed to have roles
-                    await removeAllRoles();
-                    await updateRoles();
+                    await Promise.all((removeAllRoles(), updateRoles());
+                    
+                    
                     message.reply('roller oppdatert');
                 } else {
                         message.reply('du har ikke tillatelse til å gjøre dette, kontakt administrasjonen.');
