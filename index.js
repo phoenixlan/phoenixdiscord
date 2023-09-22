@@ -85,7 +85,7 @@ setInterval(() => {
 async function removeAllRoles() {
     const guild = phoenixClient.guilds.cache.get(phoenixGuildId);
     try {
-        let crews = await Promise.all((await phoenix.Crew.getCrews()));
+        const crews = await phoenix.Crew.getCrews();
         crews.forEach(async (crew) => {
             const allCrews = await phoenix.Crew.getCrew(crew.uuid);
             const readableCrew = allCrews.positions;
