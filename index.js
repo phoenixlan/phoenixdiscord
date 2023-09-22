@@ -218,11 +218,10 @@ phoenixClient.on('messageCreate', async (message) => {
                     await removeAllRoles();
                     await updateRoles();
                     message.reply('roller oppdatert');
-                    break;
                 } else {
                         message.reply('du har ikke tillatelse til å gjøre dette, kontakt administrasjonen.');
-                        break;
                 };
+                break;
             case 'liam':
                 //getting time in japan, where liam lives
                 let liam_tid = new Date().toLocaleTimeString("nb-NO", {
