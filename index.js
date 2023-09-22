@@ -122,8 +122,8 @@ async function updateRoles() {
     const guild = phoenixClient.guilds.cache.get(phoenixGuildId);
     let crews = await Promise.all((await phoenix.Crew.getCrews()));
     crews.forEach(async (Crew) => {
-        let allCrews = await phoenix.Crew.getCrew(Crew.uuid);
-        let readableCrew = allCrews.positions;
+        const allCrews = await phoenix.Crew.getCrew(Crew.uuid);
+        const readableCrew = allCrews.positions;
         readableCrew.forEach(async (position) => {
             if (position.chief === true) {
                 position.position_mappings.forEach(async (mapping) => {
