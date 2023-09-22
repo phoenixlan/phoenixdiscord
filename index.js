@@ -87,8 +87,8 @@ async function removeAllRoles() {
     try {
         let crews = await Promise.all((await phoenix.Crew.getCrews()));
         crews.forEach(async (crew) => {
-            let allCrews = await phoenix.Crew.getCrew(Crew.uuid);
-            let readableCrew = allCrews.positions;
+            const allCrews = await phoenix.Crew.getCrew(crew.uuid);
+            const readableCrew = allCrews.positions;
             readableCrew.forEach(async (position) => {
                 if (position.chief === true) {
                     position.position_mappings.forEach(async (mapping) => {
