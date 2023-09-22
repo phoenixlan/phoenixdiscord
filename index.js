@@ -90,7 +90,7 @@ async function removeAllRoles() {
             const allCrews = await phoenix.Crew.getCrew(crew.uuid);
             const readableCrew = allCrews.positions;
             readableCrew.forEach(async (position) => {
-                if (position.chief === true) {
+                if (position.chief) {
                     position.position_mappings.forEach(async (mapping) => {
                         let discordUser = await phoenix.User.getDiscordMapping(mapping.user.uuid);
                         if (discordUser != null && discordUser.discord_id != null) {
