@@ -93,7 +93,7 @@ async function removeAllRoles() {
                 if (position.chief) {
                     position.position_mappings.forEach(async (mapping) => {
                         let discordUser = await phoenix.User.getDiscordMapping(mapping.user.uuid);
-                        if (discordUser != null && discordUser.discord_id != null) {
+                        if (discordUser !== null && discordUser.discord_id !== null) {
                             let roleVar = guild.roles.cache.find(role => role.name === "Gruppeleder");
                             let member = await guild.members.fetch(discordUser.discord_id);
                             await member.roles.remove(roleVar);
