@@ -212,7 +212,7 @@ phoenixClient.on('messageCreate', async (message) => {
             case 'roles':
                 //only runs if user has role "Administrasjon" in the discord server
                 const guild = phoenixClient.guilds.cache.get(phoenixGuildId);
-                let role = message.member.roles.cache.find(role => role.name === "Administrasjon")
+                const role = message.member.roles.cache.find(role => role.name === "Administrasjon")
                 if(role){
                     //removes roles and adds them again to make sure that if someone is removed from the crew, it will remove them first, then add all the people that are supposed to have roles
                     await removeAllRoles();
