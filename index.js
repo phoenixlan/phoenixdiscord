@@ -25,7 +25,7 @@ phoenix.init(process.env.INIT_URL);
 //change this to token from login in the api
 phoenix.User.Oauth.setAuthState(process.env.TOKEN, process.env.REFRESH_TOKEN);
 //variable that controls the months before the next event crew roles should be removed
-const timeBeforeNextEventRemove = process.env.REMOVE_MONTHS;
+const timeBeforeNextEventRemove = parseInt(process.env.REMOVE_MONTHS);
 //change this, guild id to ensure proper guild selection
 let phoenixGuildId = process.env.GUILD_ID;
 //set the discord token variable with the token from .env file
