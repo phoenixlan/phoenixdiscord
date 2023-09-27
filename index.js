@@ -17,6 +17,9 @@ const {
     EmbedBuilder,
     Guild
 } = require("discord.js");
+
+//set a variable to half an hour
+let halfHour = 1800000;
 //initialise the api
 phoenix.init(process.env.INIT_URL);
 //change this to token from login in the api
@@ -165,7 +168,7 @@ phoenixClient.on("ready", () => {
     setInterval(function () {
         updateRoles();
         console.log("half an hour has gone by, updating roles");
-    }, 1800000);
+    }, halfHour);
 });
 
 //when someone joins the server
