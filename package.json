@@ -1,0 +1,19 @@
+{
+  "name": "phoenix_discord_bot",
+  "version": "1.0.0",
+  "description": "phoenix lan discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "phoenix lan",
+  "license": "ISC",
+  "dependencies": {
+    "@date-fns/utc": "^1.0.0",
+    "@phoenixlan/phoenix.js": "^2.30.0",
+    "amqplib": "^0.10.3",
+    "date-fns": "^2.30.0",
+    "discord.js": "^14.12.1",
+    "dotenv": "^16.3.1"
+  }
+}
