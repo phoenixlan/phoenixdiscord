@@ -139,7 +139,6 @@ async function updateRoles() {
                         }
                     } catch (error) {
                         console.error("an error occured while editing roles:", error);
-                        console.log()
                     }
                 })
             } else {
