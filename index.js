@@ -73,7 +73,7 @@ async function handleRoleRemoval() {
     const nextEventTimeOffsetted = events
         .map(event => subMonths(new UTCDate(event["start_time"] * 1000), timeBeforeNextEventRemove))
         .find(time => time.getTime() > now.getTime());
-    if (!nextEventTimeOffsetted || differenceInHours(nextEventTimeOffsetted, now) > 25) {
+    if (!nextEventTimeOffsetted || differenceInHours(nextEventTimeOffsetted, now) > 24) {
         console.info("Skipping scheduled role removal");
         return;
     }
